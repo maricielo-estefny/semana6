@@ -12,13 +12,20 @@ import { Router } from '@angular/router';
 })
 export class ProductPage implements OnInit {
 
-  productos:ProductoModel[] | undefined;
+  // productos:ProductoModel[] | undefined;
+  productos:ProductoModel[]=[];
+  productosFiltradas: ProductoModel[] = []; // Almacenar las categorías filtradas
+  searchTerm: string = '';
   constructor(private service:ProductosService,
   private modalCtrl:ModalController,private router:Router,private alertCtrl:AlertController) { }
   ngOnInit() {
-    this.service.ObtenerTodos().subscribe(
-      response=>{
-      this.productos=response;
+    // this.service.ObtenerTodos().subscribe(
+    //   response=>{
+    //   this.productos=response;
+    // });
+    this.service.ObtenerTodos().subscribe((response) => {
+      this.productos = response;
+      this.productosFiltradas = [...this.productos];
     });
   }
   Agregar(){
@@ -142,7 +149,21 @@ export class ProductPage implements OnInit {
         }]
     }).then(alert=>alert.present());
   }
-
+  buscarProducto() {
+    if (this.searchTerm.trim() === '') {
+      console.log('HOLA')
+      // Si el campo de búsqueda está vacío, mostrar todas las categorías
+      this.productosFiltradas = [...this.productos];
+    } else {
+      console.log('HOLA2')
+      // Filtrar las categorías por la descripción ingresada
+      console.log('datos antigios', this.productosFiltradas)
+      this.productosFiltradas = this.productos.filter((producto) =>
+        producto.descripcion.toLowerCase().includes(this.searchTerm.toLowerCase())
+      );
+      console.log('datos filtrados', this.productosFiltradas)
+    }
+  }
 
 
 }

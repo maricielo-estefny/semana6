@@ -11,13 +11,20 @@ import { Router } from '@angular/router';
 })
 export class ClientePage implements OnInit {
 
-  clientes:ClienteModel[] | undefined;
+  // clientes:ClienteModel[] | undefined;
+  clientes:ClienteModel[]=[];
+  clientesFiltradas: ClienteModel[] = []; // Almacenar las categorías filtradas
+  searchTerm: string = '';
   constructor(private service:ClienteService,
   private modalCtrl:ModalController,private router:Router,private alertCtrl:AlertController) { }
   ngOnInit() {
-    this.service.ObtenerTodos().subscribe(
-      response=>{
-      this.clientes=response;
+    // this.service.ObtenerTodos().subscribe(
+    //   response=>{
+    //   this.clientes=response;
+    // });
+    this.service.ObtenerTodos().subscribe((response) => {
+      this.clientes = response;
+      this.clientesFiltradas = [...this.clientes];
     });
   }
   Agregar(){
@@ -82,5 +89,19 @@ export class ClientePage implements OnInit {
         }]
     }).then(alert=>alert.present());
   }
-
+  buscarCliente() {
+    if (this.searchTerm.trim() === '') {
+      console.log('HOLA')
+      // Si el campo de búsqueda está vacío, mostrar todas las categorías
+      this.clientesFiltradas = [...this.clientes];
+    } else {
+      console.log('HOLA2')
+      // Filtrar las categorías por la descripción ingresada
+      console.log('datos antigios', this.clientesFiltradas)
+      this.clientesFiltradas = this.clientes.filter((cliente) =>
+        cliente.dni.toLowerCase().includes(this.searchTerm.toLowerCase())
+      );
+      console.log('datos filtrados', this.clientesFiltradas)
+    }
+  }
 }

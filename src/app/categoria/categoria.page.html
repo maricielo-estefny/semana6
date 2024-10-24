@@ -15,6 +15,16 @@
     </ion-toolbar>
   </ion-header>
   <div id="container">
+    <ion-item>
+      <!-- categoria.page.html -->
+      <!-- <input type="text" [(ngModel)]="searchTerm" (input)="buscarCategoria()" placeholder="Buscar categoría"> -->
+      <ion-searchbar [(ngModel)]="searchTerm" placeholder="Buscar por descripción"></ion-searchbar>
+      <ion-buttons (click)="buscarCategoria()" slot="end">
+        <ion-button color="primary" fill="outline">Buscar
+          <ion-icon name="search-outline"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    </ion-item>
      <ion-list>
         <ion-item>
            <ion-buttons (click)="Agregar()" slot="end">
@@ -24,7 +34,7 @@
              </ion-button >
            </ion-buttons>
         </ion-item>
-        <ion-item-sliding *ngFor="let categoria of categorias">
+        <ion-item-sliding *ngFor="let categoria of categoriasFiltradas">
           <ion-item>
             <ion-label>
             <h3 class="title">{{ categoria.descripcion }}</h3>

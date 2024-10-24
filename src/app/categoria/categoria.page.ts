@@ -11,13 +11,25 @@ import { Router } from '@angular/router';
 })
 export class CategoriaPage implements OnInit {
 
-  categorias:CategoriaModel[] | undefined;
+
+  // categorias:CategoriaModel[] | undefined;
+  categorias:CategoriaModel[]=[];
+  categoriasFiltradas: CategoriaModel[] = []; // Almacenar las categorías filtradas
+  searchTerm: string = '';
   constructor(private service:CategoriaService,
   private modalCtrl:ModalController,private router:Router,private alertCtrl:AlertController) { }
+
+
+
   ngOnInit() {
-    this.service.ObtenerTodos().subscribe(
-      response=>{
-      this.categorias=response;
+    // this.service.ObtenerTodos().subscribe(
+    //   response=>{
+    //   this.categorias=response;
+    //   this.categoriasFiltradas = [...this.categorias];
+    // });
+    this.service.ObtenerTodos().subscribe((response) => {
+      this.categorias = response;
+      this.categoriasFiltradas = [...this.categorias];
     });
   }
   Agregar(){
@@ -39,18 +51,7 @@ export class CategoriaPage implements OnInit {
     });
 
   }
-  // async Editar(categoria: CategoriaModel) {
-  //   const modal = await this.modalCtrl.create({
-  //     component: AgregarcategoriaPage,
-  //     componentProps: { categoria }
-  //   });
-  //   modal.onDidDismiss().then((data) => {
-  //     if (data.role === 'actualizado') {
-  //       this.ngOnInit(); // Refresh the list
-  //     }
-  //   });
-  //   return await modal.present();
-  // }
+
   editar2(categoria:CategoriaModel){ this.modalCtrl.create({
     component:AgregarcategoriaPage, componentProps:{ categoria }
     })
@@ -82,5 +83,20 @@ export class CategoriaPage implements OnInit {
         }]
     }).then(alert=>alert.present());
   }
-
+  // Método para buscar una categoría por descripción
+  buscarCategoria() {
+    if (this.searchTerm.trim() === '') {
+      console.log('HOLA')
+      // Si el campo de búsqueda está vacío, mostrar todas las categorías
+      this.categoriasFiltradas = [...this.categorias];
+    } else {
+      console.log('HOLA2')
+      // Filtrar las categorías por la descripción ingresada
+      console.log('datos antigios', this.categoriasFiltradas)
+      this.categoriasFiltradas = this.categorias.filter((categoria) =>
+        categoria.descripcion.toLowerCase().includes(this.searchTerm.toLowerCase())
+      );
+      console.log('datos filtrados', this.categoriasFiltradas)
+    }
+  }
 }
