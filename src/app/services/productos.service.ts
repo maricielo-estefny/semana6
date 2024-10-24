@@ -5,15 +5,20 @@ import {ProductoModel } from '../models/producto.model';
 providedIn: 'root'
 })
 export class ProductosService {
-  private url='http://localhost:8000/api/listadoPro';
+  private url='http://localhost:8000/api/producto';
   constructor(private http:HttpClient ) { }
   ObtenerTodos(){
-  return this.http.get<[ProductoModel]>(this.url);
+    return this.http.get<[ProductoModel]>(this.url);
   }
   Agregar(producto:ProductoModel){
     return this.http.post(this.url,producto);
   }
-
+  Actualizar(producto:ProductoModel,idproducto:number){
+    return this.http.put(this.url+'/'+ idproducto,producto);
+  }
+  Borrar(idproducto:number){
+    return this.http.delete(this.url+'/'+ idproducto);
+  }
 }
 
 

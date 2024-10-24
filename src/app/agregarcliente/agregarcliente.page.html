@@ -1,0 +1,49 @@
+
+
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title></ion-title>
+    <ion-title>{{ edit ? 'Editar ' : 'Agregar '}} Cliente</ion-title>
+    <ion-buttons slot="end">
+      <ion-button color="danger" (click)="cerrarModal()"> close </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Agregar Cliente</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <form [formGroup]="registrarForm" (ngSubmit)="onSubmit()">
+    <ion-item>
+      <ion-label position="floating">Dni</ion-label>
+      <ion-input formControlName="dni"></ion-input>
+    </ion-item>
+    <ng-container *ngFor="let validation of validation_messages.dni">
+      <small class="error-message" *ngIf="registrarForm.get('dni')?.hasError(validation.type) && (registrarForm.get('dni')?.dirty || registrarForm.get('dni')?.touched)">
+        {{ validation.message }}
+      </small>
+    </ng-container>
+    <ion-item>
+      <ion-label position="floating">Nombre</ion-label>
+      <ion-input formControlName="nombre"></ion-input>
+    </ion-item>
+    <ng-container *ngFor="let validation of validation_messages.nombre">
+      <small class="error-message" *ngIf="registrarForm.get('nombre')?.hasError(validation.type) && (registrarForm.get('nombre')?.dirty || registrarForm.get('nombre')?.touched)">
+        {{ validation.message }}
+      </small>
+    </ng-container>
+    <ion-item>
+      <ion-label position="floating">Apellido</ion-label>
+      <ion-input formControlName="apellido"></ion-input>
+    </ion-item>
+    <ng-container *ngFor="let validation of validation_messages.apellido">
+      <small class="error-message" *ngIf="registrarForm.get('apellido')?.hasError(validation.type) && (registrarForm.get('apellido')?.dirty || registrarForm.get('apellido')?.touched)">
+        {{ validation.message }}
+      </small>
+    </ng-container>
+    <ion-button [disabled]="!registrarForm.valid" type="submit" expand="block" padding color="primary" class="ion-margin-top">{{ edit ? 'Actualizar Cliente' : 'Guardar Cliente'}}</ion-button>
+  </form>
+</ion-content>

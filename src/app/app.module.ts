@@ -7,10 +7,12 @@ import { HttpClientModule } from '@angular/common/http'; // Import HttpClientMod
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { ReactiveFormsModule } from '@angular/forms';
+import { provideHttpClient} from '@angular/common/http';
+import { FormBuilder } from '@angular/forms';
 @NgModule({
   declarations: [AppComponent],
   imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule,HttpClientModule,ReactiveFormsModule ],
-  providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
+  providers: [FormBuilder,{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy },provideHttpClient()],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
